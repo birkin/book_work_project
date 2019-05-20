@@ -19,13 +19,13 @@ log.debug( f'current_file, ```{current_file}```; current_dir, ```{current_dir}``
 ## work
 
 lst = []
-with open( f'{project_dir}/data/01_original_file.csv', 'r', encoding='utf-8-sig' ) as f:  # note: 'utf-8-sig' necessary to handle the BOM-indicator in this file, otherwise all the IDs look like ```"\ufeffOTL ID": "4"```.
+with open( f'{project_dir}/data/03_snapshot_open_textbook.csv', 'r', encoding='utf-8-sig' ) as f:  # note: 'utf-8-sig' necessary to handle the BOM-indicator in this file, otherwise all the IDs look like ```"\ufeffOTL ID": "4"```.
     csv_reader = csv.DictReader( f )
     for csv_row in csv_reader:
         lst.append( csv_row )
 
 jsn = json.dumps( lst, indent=2 )
-with open( f'{project_dir}/data/02_from_original.json', 'w' ) as f:
+with open( f'{project_dir}/data/04_snapshot_open_textbook.json', 'w' ) as f:
     f.write( jsn )
 
 print( jsn )
