@@ -9,8 +9,14 @@ thoughts...
 
 data directory...
 
-- `01-original-file.csv` is the sample file we were initially given.
+- `01_source_booklist_2019-04-26` is the sample initial file.
 
-- `02-fielded_file.json` is above file in a bit more useful format, made via:
+- `02_source_booklist_2019-04-26.json` is above file in more useful json format, made via:
 
     `$ python3 ./code/source_file_csv_to_json.py`
+
+- `03_snapshot_open_textbook.csv` is an Open Textbook Library [download](https://open.umn.edu/opentextbooks/download.csv) from 2019-May-16-Thursday.
+
+- `04_snapshot_open_textbook.json` is above file in more useful json format, made via:
+
+    `$ python3 ./code/opentextbook_csv_to_json.py`
