@@ -9,9 +9,9 @@ thoughts...
 
 data directory...
 
-- `01_source_booklist_2019-04-26` is the sample initial file.
+- (not in data-directory) `01_source_booklist_2019-04-26` is the sample initial file.
 
-- `02_source_booklist_2019-04-26.json` is above file in more useful json format, made via:
+- (not in data-directory) `02_source_booklist_2019-04-26.json` is above file in more useful json format, made via:
 
     `$ python3 ./code/source_file_csv_to_json.py`
 
