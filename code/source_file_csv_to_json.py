@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import csv, datetime, json, logging, os, pathlib, pprint
+import csv, datetime, io, json, logging, os, pathlib, pprint
 
 
 ## setup
@@ -18,9 +18,22 @@ log.debug( f'current_file, ```{current_file}```; current_dir, ```{current_dir}``
 
 ## work
 
+## doesn't work because first two lines of csv file need to be removed
+# lst = []
+# with open( f'{project_dir}/data/01_source_booklist_2019-04-26.csv', 'r', encoding='utf-8' ) as f:
+#     csv_reader = csv.DictReader( f )
+#     for csv_row in csv_reader:
+#         lst.append( csv_row )
+
 lst = []
 with open( f'{project_dir}/data/01_source_booklist_2019-04-26.csv', 'r', encoding='utf-8' ) as f:
-    csv_reader = csv.DictReader( f )
+    lines = f.readlines()
+    good_lines = lines[2:]
+    io_f = io.StringIO()    # create an in-memory file-like-object
+    for line in good_lines:
+        io_f.write( line )  # ok, new file written, but pointer is at end-of-file
+        io_f.seek( 0 )      # go back to beginning of file
+    csv_reader = csv.DictReader( io_f )
     for csv_row in csv_reader:
         lst.append( csv_row )
 
