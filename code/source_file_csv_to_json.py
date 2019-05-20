@@ -8,7 +8,7 @@ import csv, datetime, io, json, logging, os, pathlib, pprint, tempfile
 logging.basicConfig(
     level=logging.DEBUG,
     format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s', datefmt='%d/%b/%Y %H:%M:%S' )
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)  # outputs to console
 
 current_file = pathlib.Path(__file__).resolve()
 current_dir = pathlib.Path(__file__).resolve().parent
@@ -42,4 +42,4 @@ jsn = json.dumps( lst, indent=2 )
 with open( f'{stuff_dir}/02_source_booklist_2019-04-26.json', 'w' ) as f:
     f.write( jsn )
 
-print( jsn )
+log.debug( f'jsn, ```{jsn}```' )
