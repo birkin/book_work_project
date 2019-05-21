@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-import json, logging, pathlib, pprint, string, sys, time
+import json, logging, pathlib, pprint, random, string, sys, time
 import requests
 
 
@@ -20,12 +20,14 @@ class Link360Checker:
     def check_link360( self ):
         """ Checks serials-solutions link360 knowledgebase. """
         isbn_dct = {}
-        with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:
+        # with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:  # use this for the first run
+        with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:
             isbn_dct = json.loads( f.read() )
-        # for (isbn, other_data) in list(isbn_dct.items())[0:10]:
+        # for (isbn, other_data) in list(isbn_dct.items())[0:20]:
         for (isbn, other_data) in isbn_dct.items():
-            self.process_item( isbn_dct, isbn, other_data )
-        self.write_file( isbn_dct )
+            if 'link360_url' not in other_data.keys():
+                self.process_item( isbn_dct, isbn, other_data )
+        # self.write_file( isbn_dct )
         return
 
     def process_item( self, isbn_dct, isbn, other_data ):
@@ -33,12 +35,13 @@ class Link360Checker:
             Called by check_link360() """
         open_url = self.make_openurl( isbn, other_data )
         r = requests.get( open_url )
-        time.sleep( .5 )
+        time.sleep( random.randint(5, 15) / 10 )
         online_url = self.check_link360_response( r.json() )
         if online_url:
             isbn_dct[isbn]['link360_url'] = online_url
         else:
             isbn_dct[isbn]['link360_url'] = 'no_match_found'
+        self.write_file( isbn_dct )  # yes, horribly inefficient, but prevents having to re-hit the link360 api hundreds of times if there's an error.
         return
 
     def make_openurl( self, isbn, other_data ):
@@ -65,9 +68,9 @@ class Link360Checker:
 
     def write_file( self, isbn_dct ):
         """ Writes output file and logs a count of online urls found.
-            Called by check_link360() """
+            Called by process_item() """
         jsn = json.dumps( isbn_dct, sort_keys=True, indent=2 )
-        log.debug( f'jsn, ```{jsn}```' )
+        # log.debug( f'jsn, ```{jsn}```' )
         with open( f'{project_dir}/data/05c_after_link360_check.json', 'w', encoding='utf-8' ) as f:
             f.write( jsn )
         online_urls_found = jsn.count( 'link360_url": "https' )
