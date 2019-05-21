@@ -31,6 +31,34 @@ def build_keys():
         f.write( jsn )
 
 
+class OpenTextbookChecker:
+
+    def check_opentextbook( self ):
+        """ Checks local snapshot data. """
+        ( isbn_dct, open_textbook_lst ) = self.setup_data()
+        for (isbn, other_data) in isbn_dct.items():
+            for book_dct in open_textbook_lst:
+                if isbn == book_dct['ISBN13']:
+                    isbn_dct[isbn]['opentextbook_url'] = book_dct['Opentextbooks URL']
+                else:
+                    isbn_dct[isbn]['opentextbook_url'] = 'no_match_found'
+        jsn = json.dumps( isbn_dct, sort_keys=True, indent=2 )
+        log.debug( f'jsn, ```{jsn}```' )
+        with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'w', encoding='utf-8' ) as f:
+            f.write( jsn )
+
+    def setup_data( self ):
+        """ Loads two source files.
+            Called by check_opentextbook() """
+        with open( f'{project_dir}/data/05_source_key_data.json', 'r', encoding='utf-8' ) as f:
+            dct = json.loads( f.read() )
+        with open( f'{project_dir}/data/04_snapshot_open_textbook.json', 'r', encoding='utf-8' ) as f:
+            lst = json.loads( f.read() )
+        return ( dct, lst )
+
+    ## end class OpenTextbookChecker
+
+
 def parse_args():
     """ Parses arguments when module called via __main__. """
     parser = argparse.ArgumentParser( description='Required: function-name.' )
@@ -43,3 +71,8 @@ if __name__ == '__main__':
     log.debug( f'args, ```{args}```' )
     if args['function'] == 'build_keys':
         build_keys()
+    elif args['function'] == 'check_opentextbook':
+        checker = OpenTextbookChecker()
+        checker.check_opentextbook()
+    else:
+        raise Exception( 'unknown function' )
