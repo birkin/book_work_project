@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-import json, logging, pathlib, pprint, random, string, sys, time
+import json, logging, pathlib, pprint, random, string, sys, time, urllib
+
 import requests
 
 
@@ -48,7 +49,9 @@ class Link360Checker:
         """ Creates openurl.
             Called by process_item() """
         root = 'https://library.brown.edu/easyaccess/find/link360/'
-        openurl = f"{root}?sid=BirkinBookSearch&genre=book&rft.isbn={isbn}&rft.btitle={other_data['title']}&rft.aulast={other_data['author']}"
+        title = urllib.parse.quote_plus( other_data['title'] )
+        author = urllib.parse.quote_plus( other_data['author'] )
+        openurl = f"{root}?sid=BirkinBookSearch&genre=book&rft.isbn={isbn}&rft.btitle={title}&rft.aulast={author}"
         log.debug( f'openurl, ```{openurl}```' )
         return openurl
 
@@ -73,8 +76,38 @@ class Link360Checker:
         # log.debug( f'jsn, ```{jsn}```' )
         with open( f'{project_dir}/data/05c_after_link360_check.json', 'w', encoding='utf-8' ) as f:
             f.write( jsn )
-        online_urls_found = jsn.count( 'link360_url": [' )
-        log.info( f'online_urls_found, `{online_urls_found}`' )
+        # online_urls_found = jsn.count( 'link360_url": [' )
+        # log.info( f'online_urls_found, `{online_urls_found}`' )
+        return
+
+    def update_structure( self ):
+        """ Loops through recent file and updates to new structure.
+            _NOT_ called by check_link360() controller, but manually.
+            TODO: incorporate this into main processing. """
+        with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:  # use this for all subsequent runs
+            isbn_dct = json.loads( f.read() )
+        # for (isbn, other_data) in list(isbn_dct.items())[0:20]:
+        for (isbn, other_data) in isbn_dct.items():
+            if 'link360_url' in other_data.keys():
+                if type( other_data['link360_url'] ) == list:
+                    urls_found = other_data['link360_url']
+                else:
+                    urls_found = []
+                isbn_dct[isbn]['link360_check'] = {
+                    'openurl_tried': self.make_openurl(isbn, other_data),
+                    'urls_found': urls_found
+                }
+                del( isbn_dct[isbn]['link360_url'] )
+        self.write_file( isbn_dct )
+        #
+        count = 0
+        for (isbn, other_data) in isbn_dct.items():
+            try:
+                if other_data['link360_check']['urls_found']:
+                    count += 1
+            except:
+                pass
+        log.debug( f'link360 items with url, `{count}`' )
         return
 
     ## end class Link360Checker
