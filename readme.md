@@ -49,7 +49,9 @@ This is a project to see how much open, or at least online info we can get for b
 
     - Online urls were found for 80 items, but some may not be useful. [Example](https://github.com/birkin/book_work_project/blob/0590af148637d7cd5f88cd146d237b3bf9cab899/data/05c_after_link360_check.json#L42-L53): the title 'ARIEL', by 'PLATH', leads to [this online link](https://login.revproxy.brown.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&scope=site&db=e000xna&AN=263932) -- for an online book in Spanish. Given that the course is an English course, this is likely not ideal.
 
-    - Also note that sometimes multiple online urls were found. Initially I was only going to show the first, but figured I'd show all found.
+    - The json file shows the openurl I constructed for the lookup ([an example](https://library.brown.edu/easyaccess/find/link360/?sid=BirkinBookSearch&genre=book&rft.isbn=9780124071513&rft.btitle=FLUID+MECHANICS&rft.aulast=KUNDU)), if you're curious to see what other data is available from the link360-api.
+
+    - Note that sometimes multiple online urls were found. Initially I was only going to show the first, but figured I'd show all found.
 
     - For reference, the link360-api also returns a list of what appear to be alternate ISBNs. I'm not currently capturing this, but it could be useful. Also for reference, in the past I've found alternate ISBNs to be most useful if associated-metadata can be found so they can be filtered on language, at least.
 
