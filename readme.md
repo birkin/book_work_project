@@ -20,3 +20,9 @@ data directory...
 - `04_snapshot_open_textbook.json` is above file in more useful json format, made via:
 
     `$ python3 ./code/opentextbook_csv_to_json.py`
+
+- `05_source_key_data.json` takes the source file and makes a dictionary using normalized isbn-13 keys, made via:
+
+    `$ python3 ./code/misc.py --function build_keys`
+
+
