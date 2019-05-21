@@ -22,7 +22,8 @@ class Link360Checker:
         isbn_dct = {}
         with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:
             isbn_dct = json.loads( f.read() )
-        for (isbn, other_data) in list(isbn_dct.items())[0:10]:
+        # for (isbn, other_data) in list(isbn_dct.items())[0:10]:
+        for (isbn, other_data) in isbn_dct.items():
             self.process_item( isbn_dct, isbn, other_data )
         self.write_file( isbn_dct )
         return
