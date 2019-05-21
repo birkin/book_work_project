@@ -18,16 +18,16 @@ stuff_dir = project_dir.parent
 class Link360Checker:
 
     def check_link360( self ):
-        """ Checks serials-solutions link360 knowledgebase. """
+        """ Manages check of serials-solutions link360 knowledgebase. """
         isbn_dct = {}
         # with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:  # use this for the first run
-        with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:
+        with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:  # use this for all subsequent runs
             isbn_dct = json.loads( f.read() )
         # for (isbn, other_data) in list(isbn_dct.items())[0:20]:
         for (isbn, other_data) in isbn_dct.items():
             if 'link360_url' not in other_data.keys():
                 self.process_item( isbn_dct, isbn, other_data )
-        # self.write_file( isbn_dct )
+        # self.write_file( isbn_dct )  # moved to process-item
         return
 
     def process_item( self, isbn_dct, isbn, other_data ):
@@ -46,7 +46,7 @@ class Link360Checker:
 
     def make_openurl( self, isbn, other_data ):
         """ Creates openurl.
-            Called by check_link360() """
+            Called by process_item() """
         root = 'https://library.brown.edu/easyaccess/find/link360/'
         openurl = f"{root}?sid=BirkinBookSearch&genre=book&rft.isbn={isbn}&rft.btitle={other_data['title']}&rft.aulast={other_data['author']}"
         log.debug( f'openurl, ```{openurl}```' )
@@ -54,7 +54,7 @@ class Link360Checker:
 
     def check_link360_response( self, jdct ):
         """ Inspects response for online url.
-            Called by check_link360() """
+            Called by process_item() """
         online_url = None
         for result in jdct['results']:
             if 'linkGroups' in result.keys():
@@ -76,15 +76,6 @@ class Link360Checker:
         online_urls_found = jsn.count( 'link360_url": "https' )
         log.info( f'online_urls_found, `{online_urls_found}`' )
         return
-
-    # def setup_data( self ):
-    #     """ Loads two source files.
-    #         Called by check_opentextbook() """
-    #     with open( f'{project_dir}/data/05_source_key_data.json', 'r', encoding='utf-8' ) as f:
-    #         dct = json.loads( f.read() )
-    #     with open( f'{project_dir}/data/04_snapshot_open_textbook.json', 'r', encoding='utf-8' ) as f:
-    #         lst = json.loads( f.read() )
-    #     return ( dct, lst )
 
     ## end class Link360Checker
 
