@@ -25,4 +25,10 @@ data directory...
 
     `$ python3 ./code/misc.py --function build_keys`
 
+- `05b_after_opentextbook_check.json` uses the above file and adds a check on the `04_snapshot_open_textbook.json` open-textbook file, made via:
 
+    `$ python3 ./code/misc.py --function check_opentextbook`
+
+    Unfortunately, no matches were found.
+
+---
