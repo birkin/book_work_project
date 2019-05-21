@@ -44,7 +44,9 @@
     "isbn_original": "978-0-06-093172-8",
     "link360_check": {
       "openurl_tried": "https://library.brown.edu/easyaccess/find/link360/?sid=BirkinBookSearch&genre=book&rft.isbn=9780060931728&rft.btitle=ARIEL&rft.aulast=PLATH",
-      "urls_found": []
+      "urls_found": [
+        "https://login.revproxy.brown.edu/login?url=http://search.ebscohost.com/login.aspx?direct=true&scope=site&db=e000xna&AN=263932"
+      ]
     },
     "opentextbook_url": "no_match_found",
     "title": "ARIEL"
