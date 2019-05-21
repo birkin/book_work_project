@@ -20,11 +20,11 @@ class Link360Checker:
     def check_link360( self ):
         """ Manages check of serials-solutions link360 knowledgebase. """
         isbn_dct = {}
-        with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:  # use this for the first run
-        # with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:  # use this for all subsequent runs
+        # with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:  # use this for the first run
+        with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:  # use this for all subsequent runs
             isbn_dct = json.loads( f.read() )
-        for (isbn, other_data) in list(isbn_dct.items())[0:10]:
-        # for (isbn, other_data) in isbn_dct.items():
+        # for (isbn, other_data) in list(isbn_dct.items())[0:20]:
+        for (isbn, other_data) in isbn_dct.items():
             if 'link360_url' not in other_data.keys():
                 self.process_item( isbn_dct, isbn, other_data )
         # self.write_file( isbn_dct )  # moved to process-item
