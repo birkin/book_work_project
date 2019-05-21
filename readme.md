@@ -12,7 +12,7 @@ This is a project to see how much open, or at least online info we can get for b
 
 - the data file with the most comprehensive info will likely be the last numbered file.
 
-- team -- feel free to use other scripts/languages -- just add the file or directory to the 'code' director, add the output to the data directory, and update this readme.
+- team -- feel free to use other scripts/languages -- just add the file or directory to the 'code' directory, add the output to the 'data' directory, and update this readme.
 
 
 ---
