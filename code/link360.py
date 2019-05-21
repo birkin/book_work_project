@@ -18,7 +18,7 @@ stuff_dir = project_dir.parent
 
 class Link360Checker:
 
-    def check_link360( self ):
+    def check_link360( self ) -> None:
         """ Manages check of serials-solutions link360 knowledgebase. """
         isbn_dct = {}
         with open( f'{project_dir}/data/05b_after_opentextbook_check.json', 'r', encoding='utf-8' ) as f:  # use this for the first run
@@ -31,7 +31,7 @@ class Link360Checker:
         # self.write_file( isbn_dct )  # moved to process-item
         return
 
-    def process_item( self, isbn_dct, isbn, other_data ):
+    def process_item( self, isbn_dct: dict, isbn: str, other_data: dict ) -> None:
         """ Processes isbn_dct.
             Called by check_link360() """
         time.sleep( random.randint(5, 15) / 10 )
@@ -46,7 +46,7 @@ class Link360Checker:
         self.update_count( isbn_dct )
         return
 
-    def make_openurl( self, isbn, other_data ):
+    def make_openurl( self, isbn: str, other_data: dict ) -> str:
         """ Creates openurl.
             Called by process_item() """
         root = 'https://library.brown.edu/easyaccess/find/link360/'
@@ -56,7 +56,7 @@ class Link360Checker:
         log.debug( f'openurl, ```{openurl}```' )
         return openurl
 
-    def check_link360_response( self, jdct ):
+    def check_link360_response( self, jdct: dict ) -> str:
         """ Inspects response for online url.
             Called by process_item() """
         online_url = []
@@ -70,7 +70,7 @@ class Link360Checker:
         log.debug( 'online_url, ```%s```' % pprint.pformat(online_url) )
         return online_url
 
-    def write_file( self, isbn_dct ):
+    def write_file( self, isbn_dct: dict ) -> None:
         """ Writes output file and logs a count of online urls found.
             Called by process_item() """
         jsn = json.dumps( isbn_dct, sort_keys=True, indent=2 )
@@ -81,7 +81,7 @@ class Link360Checker:
         # log.info( f'online_urls_found, `{online_urls_found}`' )
         return
 
-    def update_count( self, isbn_dct ):
+    def update_count( self, isbn_dct: dict ) -> None:
         """ Provids a found-count as processing progresses.
             Called by process_item() """
         count = 0
@@ -93,36 +93,6 @@ class Link360Checker:
                 pass
         log.debug( f'link360 items with url, `{count}`' )
         return
-
-    # def update_structure( self ):
-    #     """ Loops through recent file and updates to new structure.
-    #         _NOT_ called by check_link360() controller, but manually.
-    #         TODO: incorporate this into main processing. """
-    #     with open( f'{project_dir}/data/05c_after_link360_check.json', 'r', encoding='utf-8' ) as f:  # use this for all subsequent runs
-    #         isbn_dct = json.loads( f.read() )
-    #     # for (isbn, other_data) in list(isbn_dct.items())[0:20]:
-    #     for (isbn, other_data) in isbn_dct.items():
-    #         if 'link360_url' in other_data.keys():
-    #             if type( other_data['link360_url'] ) == list:
-    #                 urls_found = other_data['link360_url']
-    #             else:
-    #                 urls_found = []
-    #             isbn_dct[isbn]['link360_check'] = {
-    #                 'openurl_tried': self.make_openurl(isbn, other_data),
-    #                 'urls_found': urls_found
-    #             }
-    #             del( isbn_dct[isbn]['link360_url'] )
-    #     self.write_file( isbn_dct )
-    #     #
-    #     count = 0
-    #     for (isbn, other_data) in isbn_dct.items():
-    #         try:
-    #             if other_data['link360_check']['urls_found']:
-    #                 count += 1
-    #         except:
-    #             pass
-    #     log.debug( f'link360 items with url, `{count}`' )
-    #     return
 
     ## end class Link360Checker
 
