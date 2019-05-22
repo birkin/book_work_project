@@ -77,13 +77,15 @@ def call_function( function_name: str ) -> None:
         safe_dispatcher[function_name]()
     except:
         raise Exception( 'invalid function' )
+    return
 
 
 if __name__ == '__main__':
-    args = parse_args()
+    args: dict = parse_args()
     log.debug( f'args, ```{args}```' )
     submitted_function: str = args['function']
     call_function( submitted_function )
+
 
 # if __name__ == '__main__':
 #     args = parse_args()
