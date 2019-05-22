@@ -60,19 +60,38 @@ class OpenTextbookChecker:
 
 
 def parse_args():
-    """ Parses arguments when module called via __main__. """
+    """ Parses arguments when module called via __main__ """
     parser = argparse.ArgumentParser( description='Required: function-name.' )
     parser.add_argument( '--function', '-f', help='function name required', required=True )
     args_dict = vars( parser.parse_args() )
     return args_dict
 
+
+def call_function( function_name: str ) -> None:
+    """ Safely calls function named via input string to __main__
+        Credit: <https://stackoverflow.com/a/51456172> """
+    log.debug( f'function_name, ```{function_name}```' )
+    checker = OpenTextbookChecker()
+    safe_dispatcher = { 'build_keys': build_keys, 'check_opentextbook': checker.check_opentextbook }
+    try:
+        safe_dispatcher[function_name]()
+    except:
+        raise Exception( 'invalid function' )
+
+
 if __name__ == '__main__':
     args = parse_args()
     log.debug( f'args, ```{args}```' )
-    if args['function'] == 'build_keys':
-        build_keys()
-    elif args['function'] == 'check_opentextbook':
-        checker = OpenTextbookChecker()
-        checker.check_opentextbook()
-    else:
-        raise Exception( 'unknown function' )
+    submitted_function: str = args['function']
+    call_function( submitted_function )
+
+# if __name__ == '__main__':
+#     args = parse_args()
+#     log.debug( f'args, ```{args}```' )
+#     if args['function'] == 'build_keys':
+#         build_keys()
+#     elif args['function'] == 'check_opentextbook':
+#         checker = OpenTextbookChecker()
+#         checker.check_opentextbook()
+#     else:
+#         raise Exception( 'unknown function' )
